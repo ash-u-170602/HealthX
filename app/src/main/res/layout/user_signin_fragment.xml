@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/gradient_background"
     android:layout_height="match_parent">
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_marginTop="100dp"
         android:fontFamily="@font/myfont"
         android:text="Sign In"
-        android:textColor="@color/theme"
+        android:textColor="@color/TextTheme"
         android:textSize="@dimen/_40ssp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -50,6 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign In"
+            android:backgroundTint="@color/TextTheme"
             android:fontFamily="@font/myfont"
             android:textSize="@dimen/_15ssp"
             android:textStyle="normal"
@@ -76,7 +78,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/myfont"
         android:text=" Sign Up"
-        android:textColor="@color/theme"
+        android:textColor="@color/TextTheme"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/tv_text1"
         app:layout_constraintTop_toBottomOf="@+id/ll_signup" />

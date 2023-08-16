@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuFragment"
+        android:icon="@drawable/menu"
+        android:title="Menu" />
+
+    <item
+        android:id="@+id/stepsFragment"
+        android:icon="@drawable/footprints"
+        android:title="Steps" />
+
+    <item
+        android:id="@+id/infoFragment"
+        android:icon="@drawable/open_book_1"
+        android:title="Info" />
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/settings"
+        android:title="Settings" />
+
+</menu>
