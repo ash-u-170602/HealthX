@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.healthx.databinding.UserRegistrationFragmentBinding
+import com.example.healthx.databinding.UserSigninFragmentBinding
 
-class UserRegistrationFragment: Fragment() {
+class UserSignInFragment: Fragment() {
 
-    private val binding by lazy { UserRegistrationFragmentBinding.inflate(layoutInflater) }
+    private val binding by lazy { UserSigninFragmentBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

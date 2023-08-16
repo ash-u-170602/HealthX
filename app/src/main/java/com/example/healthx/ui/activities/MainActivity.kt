@@ -1,10 +1,8 @@
 package com.example.healthx.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.healthx.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.healthx.databinding.ActivityMainBinding
-import com.example.healthx.databinding.UserRegistrationFragmentBinding
 
 class MainActivity : AppCompatActivity() {
 

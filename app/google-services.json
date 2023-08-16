@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "674480707351",
+    "project_id": "healthx-49235",
+    "storage_bucket": "healthx-49235.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674480707351:android:b6ba9f55631d17a9280952",
+        "android_client_info": {
+          "package_name": "com.example.healthx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674480707351-jhn56857cqbm5g3hp3qa56uuar8jdv6v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthx",
+            "certificate_hash": "88d22903aa75cc9a6fd725a39ad15c285c4ce9ed"
+          }
+        },
+        {
+          "client_id": "674480707351-93kimfsd482vo0pupual86q1oedlqqc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlObqSVG3_vRxY-aLdnQkAdppSkQcsumk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674480707351-93kimfsd482vo0pupual86q1oedlqqc3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
