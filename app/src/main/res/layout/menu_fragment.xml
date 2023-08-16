@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:layout_marginStart="@dimen/_10sdp"
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:fontFamily="@font/myfont"
+                android:text="Good Morning,"
+                android:textColor="@color/blackTheme"
+                android:textSize="@dimen/_25ssp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Health Overview"
+            android:layout_marginTop="@dimen/_15ssp"
+            android:fontFamily="@font/myfont"
+            android:textSize="@dimen/_30ssp"
+            android:textStyle="bold"
+            android:textColor="@color/blackTheme"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Daily Health Statistics"
+            android:fontFamily="@font/myfont"
+            android:textSize="@dimen/_15ssp"
+            android:textColor="#575454"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="@dimen/_60sdp"
+        android:fontFamily="@font/myfont"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textStyle="bold"
+        android:text="Ashad Naushad"
+        android:textSize="@dimen/_17ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

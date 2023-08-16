@@ -2,22 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menuFragment"
+        android:id="@+id/menu_fragment"
         android:icon="@drawable/menu"
         android:title="Menu" />
 
     <item
-        android:id="@+id/stepsFragment"
+        android:id="@+id/steps_fragment"
         android:icon="@drawable/footprints"
         android:title="Steps" />
 
     <item
-        android:id="@+id/infoFragment"
+        android:id="@+id/empty"
+        android:enabled="false"
+        android:title="" />
+
+    <item
+        android:id="@+id/info_fragment"
         android:icon="@drawable/open_book_1"
         android:title="Info" />
 
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@+id/settings_fragment"
         android:icon="@drawable/settings"
         android:title="Settings" />
 
