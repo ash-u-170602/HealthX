@@ -25,6 +25,7 @@ class UserSignUpFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         binding.ttSignIn.setOnClickListener {
