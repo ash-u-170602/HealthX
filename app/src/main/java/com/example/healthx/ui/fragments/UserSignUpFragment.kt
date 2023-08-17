@@ -2,7 +2,6 @@ package com.example.healthx.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.example.healthx.R
 import com.example.healthx.databinding.UserSignupFragmentBinding
 import com.example.healthx.ui.activities.OnboardingActivity
-import com.google.firebase.auth.EmailAuthProvider
 
 class UserSignUpFragment : Fragment() {
 
