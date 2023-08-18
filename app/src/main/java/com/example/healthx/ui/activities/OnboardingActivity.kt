@@ -17,8 +17,11 @@ class OnboardingActivity : AppCompatActivity() {
         binding.bottomAppBar.background = null
 
         val bottomNav = binding.bottomNav
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         val navController = navHostFragment.navController
         bottomNav.setupWithNavController(navController)
+
+        
     }
 }
