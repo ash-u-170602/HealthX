@@ -5,7 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.example.healthx.R
 import com.example.healthx.databinding.MenuFragmentBinding
@@ -14,7 +19,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 
-class MenuFragment: Fragment() {
+class MenuFragment : Fragment() {
 
     private val binding by lazy { MenuFragmentBinding.inflate(layoutInflater) }
 
@@ -25,12 +30,43 @@ class MenuFragment: Fragment() {
     ): View {
 
 
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val customList = listOf("Today", "Yesterday", "29 Oct")
+
+        val adapter = ArrayAdapter<String>(
+            requireContext(),
+            R.layout.custom_spinner_layout,
+            customList
+        )
+
+        binding.spinner.adapter = adapter
+        binding.spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(
+                    requireContext(),
+                    "Selected ${adapterView?.getItemAtPosition(position).toString()}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+
+
+
 
         val list: ArrayList<PieEntry> = ArrayList()
         list.add(PieEntry(8000f))
@@ -60,6 +96,7 @@ class MenuFragment: Fragment() {
             animateY(800)
             animateX(500)
         }
+
 
     }
 
