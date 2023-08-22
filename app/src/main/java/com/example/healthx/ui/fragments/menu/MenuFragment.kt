@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.example.healthx.R
 import com.example.healthx.auth.AuthViewModel
 import com.example.healthx.databinding.MenuFragmentBinding
@@ -34,6 +36,7 @@ class MenuFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        database = FirebaseDatabase.getInstance()
 
 
     }
@@ -43,27 +46,11 @@ class MenuFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        database = FirebaseDatabase.getInstance()
-
-        val dataReference = database.getReference("Users")
-        dataReference.child("0m2KVjtsvWXv49The6VnwirGlBw2 Mohd Ashad Naushad").get().addOnCompleteListener{task->
-            if (task.isSuccessful){
-                if (task.result.exists()){
-
-                    val dataSnapshot = task.result
-                    val userName = dataSnapshot.child("userName").value
-                    val profileUri = dataSnapshot.child("profilePictureUrl").value
-
-                    binding.userName.text = userName.toString()
-                    Glide.with(requireContext()).load(profileUri).into(binding.imageView)
-
-                }
 
 
-            }
 
 
-        }
+
 
 
         return binding.root
@@ -73,6 +60,34 @@ class MenuFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.time.text = setGreet()
+
+        val dataReference = database.getReference("Users")
+
+        viewModel.userKey.observe(viewLifecycleOwner){key->
+            if (key != null) {
+                Toast.makeText(requireContext(), key, Toast.LENGTH_SHORT).show()
+                dataReference.child(key).get()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            if (task.result.exists()) {
+
+                                val dataSnapshot = task.result
+                                val userName = dataSnapshot.child("userName").value
+                                val profileUri = dataSnapshot.child("profilePictureUrl").value
+
+                                binding.userName.text = getFirstTwoWords(userName.toString())
+                                Glide.with(requireContext())
+                                    .load(profileUri)
+                                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                                    .into(binding.imageView)
+
+                            }
+                        }
+                    }
+            }
+        }
+
+
 
         val customList = listOf(
             "Today",
@@ -151,6 +166,15 @@ class MenuFragment : BaseFragment() {
     private fun formatDate(date: Date): String {
         val format = SimpleDateFormat("dd MMM", Locale.getDefault())
         return format.format(date)
+    }
+
+    private fun getFirstTwoWords(sentence: String): String {
+        val words = sentence.trim().split("\\s+".toRegex())
+        return if (words.size >= 2) {
+            "${words[0]} ${words[1]}"
+        } else {
+            sentence
+        }
     }
 
 

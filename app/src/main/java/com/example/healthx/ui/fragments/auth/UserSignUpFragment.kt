@@ -6,18 +6,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.healthx.auth.AuthViewModel
-import com.example.healthx.auth.UserData
 import com.example.healthx.databinding.UserSignupFragmentBinding
 import com.example.healthx.ui.activities.OnboardingActivity
+import com.example.healthx.util.Constants.Companion.RC_SIGN_IN
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -26,8 +25,6 @@ class UserSignUpFragment : Fragment() {
     private val binding by lazy { UserSignupFragmentBinding.inflate(layoutInflater) }
     private lateinit var viewModel: AuthViewModel
     private lateinit var auth: FirebaseAuth
-    private lateinit var database: FirebaseDatabase
-    private val RC_SIGN_IN = 40
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,14 +32,14 @@ class UserSignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         auth = FirebaseAuth.getInstance()
-        database = FirebaseDatabase.getInstance()
 
-        if (auth.currentUser!=null){
+
+        if (auth.currentUser != null) {
             moveToOnboardingScreen()
         }
+
 
         viewModel.authState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -93,31 +90,15 @@ class UserSignUpFragment : Fragment() {
             )
             task.addOnCompleteListener { authTask ->
                 if (authTask.isSuccessful) {
+                    viewModel.saveUserDataToFirebase(auth.currentUser)
                     moveToOnboardingScreen()
-                    saveInFirebase()
                 } else {
                     // Handle authentication failure
+                    Toast.makeText(requireContext(), "Something Went Wrong!!", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
-    }
-
-
-    private fun saveInFirebase() {
-        val user = auth.currentUser
-
-        if (user?.uid != null) {
-            val users = UserData(
-                userId = user.uid,
-                userName = user.displayName,
-                profilePictureUrl = user.photoUrl.toString(),
-                email = user.email
-            )
-
-            val key = user.uid + " " + user.displayName
-            database.reference.child("Users").child(key).setValue(users)
-        }
-
     }
 
     private fun moveToOnboardingScreen() {
@@ -127,5 +108,9 @@ class UserSignUpFragment : Fragment() {
         requireActivity().finish()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        auth.signOut()
+    }
 
 }
