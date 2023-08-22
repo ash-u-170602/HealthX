@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.healthx.R
 import com.example.healthx.databinding.ActivityMainBinding
-import com.example.healthx.ui.fragments.UserSignUpFragment
+import com.example.healthx.ui.fragments.auth.UserSignUpFragment
 
 class MainActivity : AppCompatActivity() {
 

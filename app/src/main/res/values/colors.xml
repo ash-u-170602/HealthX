@@ -5,7 +5,8 @@
     <color name="theme">#BDB0DF</color>
     <color name="themeHeavy">#493f66</color>
     <color name="TextTheme">#8D78C3</color>
-    <color name="green">#82A883</color>
+    <color name="green">#44746a</color>
+    <color name="greenLight">#dbe9e5</color>
     <color name="lightTheme">#EDE3EF</color>
     <color name="blackTheme">#161616</color>
 </resources>

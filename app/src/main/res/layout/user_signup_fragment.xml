@@ -3,120 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/gradient_background"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
 
     <TextView
         android:id="@+id/tv_signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="104dp"
         android:fontFamily="@font/myfont"
         android:text="Sign Up"
         android:textColor="@color/TextTheme"
         android:textSize="@dimen/_40ssp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_signUp">
-
-        <EditText
-            android:id="@+id/emailId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/rounded_border"
-            android:inputType="textEmailAddress"
-            android:hint="Email Address"
-            android:padding="@dimen/_10sdp" />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/rounded_border"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="@dimen/_10sdp" />
-
-        <EditText
-            android:id="@+id/confPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/rounded_border"
-            android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:padding="@dimen/_10sdp" />
-
-        <Button
-            android:id="@+id/btn_signUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:backgroundTint="@color/TextTheme"
-            android:fontFamily="@font/myfont"
-            android:textSize="@dimen/_15ssp"
-            android:textStyle="normal"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
     <TextView
-        android:id="@+id/tv_text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/myfont"
-        android:text="Already have an account?"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="@+id/ll_signup"
-        app:layout_constraintTop_toBottomOf="@+id/ll_signup" />
-
-    <TextView
-        android:id="@+id/tt_signIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/myfont"
-        android:text=" Sign in"
-        android:textColor="@color/TextTheme"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toRightOf="@+id/tv_text1"
-        app:layout_constraintTop_toBottomOf="@+id/ll_signup" />
-
-    <TextView
-        android:id="@+id/tt2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="90dp"
-        android:fontFamily="@font/myfont"
-        android:text="Or Sign up with:"
-        android:textSize="@dimen/_13ssp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tt_signIn" />
-
-    <ImageView
         android:id="@+id/google"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginTop="-8dp"
-        android:src="@drawable/google"
-        app:layout_constraintLeft_toRightOf="@+id/tt2"
-        app:layout_constraintTop_toTopOf="@id/tt2" />
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="184dp"
+        android:background="@drawable/rounded_border"
+        android:drawableEnd="@drawable/google"
+        android:padding="@dimen/_10sdp"
+        android:fontFamily="@font/myfont"
+        android:text="SignUp with Google ID  "
+        android:textAlignment="center"
+        android:textColor="@color/themeHeavy"
+        android:textSize="@dimen/_17ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_signUp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

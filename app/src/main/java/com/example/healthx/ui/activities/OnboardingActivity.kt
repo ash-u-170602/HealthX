@@ -1,7 +1,7 @@
 package com.example.healthx.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.healthx.R
@@ -14,7 +14,6 @@ class OnboardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.bottomAppBar.background = null
 
         val bottomNav = binding.bottomNav
         val navHostFragment =

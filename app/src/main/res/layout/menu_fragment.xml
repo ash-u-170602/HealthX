@@ -32,9 +32,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/myfont"
-                android:text="Good Morning,"
+                android:text="Good Afternoon"
                 android:textColor="@color/blackTheme"
-                android:textSize="@dimen/_25ssp"
+                android:textSize="@dimen/_24ssp"
                 android:textStyle="bold" />
 
             <TextView
@@ -434,6 +434,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/shape"
+                    android:baselineAligned="true"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_5sdp"
                     app:layout_constraintBottom_toBottomOf="parent"

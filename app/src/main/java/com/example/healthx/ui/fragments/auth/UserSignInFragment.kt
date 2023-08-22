@@ -1,12 +1,10 @@
-package com.example.healthx.ui.fragments
+package com.example.healthx.ui.fragments.auth
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.example.healthx.R
 import com.example.healthx.databinding.UserSigninFragmentBinding
 import com.example.healthx.ui.activities.MainActivity
 
