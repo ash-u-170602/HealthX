@@ -1,4 +1,4 @@
-package com.example.healthx.auth
+package com.example.healthx.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,5 +9,6 @@ data class UserData(
     val userId: String,
     val userName: String?,
     val profilePictureUrl: String?,
-    val email: String?
+    val email: String?,
+    val stats: List<Stats>
 )

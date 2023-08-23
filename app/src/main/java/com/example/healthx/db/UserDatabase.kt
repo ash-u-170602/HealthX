@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.healthx.auth.UserData
+import androidx.room.TypeConverters
+import com.example.healthx.models.UserData
 
 @Database(
     entities = [UserData::class],
-    version = 1
+    version = 2
 )
+@TypeConverters(StatsTypeConverter::class)
 abstract class UserDatabase : RoomDatabase() {
 
     abstract fun getUserDao(): UserDao

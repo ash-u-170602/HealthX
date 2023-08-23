@@ -1,6 +1,6 @@
 package com.example.healthx.repository
 
-import com.example.healthx.auth.UserData
+import com.example.healthx.models.UserData
 import com.example.healthx.db.UserDatabase
 
 class UserRepository(
