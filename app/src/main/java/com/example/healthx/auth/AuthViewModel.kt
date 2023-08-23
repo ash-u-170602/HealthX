@@ -2,11 +2,16 @@ package com.example.healthx.auth
 
 import android.app.Application
 import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.healthx.HealthXApplication
 import com.example.healthx.models.Stats
 import com.example.healthx.models.UserData
+import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.util.Constants.Companion.SERVER_CLIENT_ID
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -21,7 +26,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import java.util.Calendar
 
-class AuthViewModel(application: Application) : AndroidViewModel(application) {
+class AuthViewModel : ViewModel() {
 
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> get() = _authState
@@ -29,8 +34,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val _userKey = MutableLiveData<String?>()
     val userKey: LiveData<String?> get() = _userKey
 
-    private fun setUserKey(key: String?) {
+    fun setUserKey(key: String?) {
+
         _userKey.value = key
+        if (key != null) {
+            OnboardingActivity.key = key
+        }
     }
 
 
@@ -44,7 +53,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             .requestEmail()
             .build()
 
-        mGoogleSignInClient = GoogleSignIn.getClient(application.applicationContext, gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(HealthXApplication.instance!!.baseContext, gso)
     }
 
     fun saveUserDataToFirebase(user: FirebaseUser?) {

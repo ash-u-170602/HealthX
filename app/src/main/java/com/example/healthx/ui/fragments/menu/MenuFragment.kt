@@ -9,6 +9,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -16,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.healthx.R
 import com.example.healthx.auth.AuthViewModel
 import com.example.healthx.databinding.MenuFragmentBinding
+import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.ui.fragments.BaseFragment
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -29,13 +31,12 @@ import java.util.Locale
 class MenuFragment : BaseFragment() {
 
     private val binding by lazy { MenuFragmentBinding.inflate(layoutInflater) }
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by activityViewModels()
     private lateinit var database: FirebaseDatabase
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         database = FirebaseDatabase.getInstance()
 
 
@@ -58,6 +59,7 @@ class MenuFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setUserKey(OnboardingActivity.key)
 
         binding.time.text = setGreet()
 
@@ -65,6 +67,7 @@ class MenuFragment : BaseFragment() {
 
         viewModel.userKey.observe(viewLifecycleOwner){key->
             if (key != null) {
+
                 Toast.makeText(requireContext(), key, Toast.LENGTH_SHORT).show()
                 dataReference.child(key).get()
                     .addOnCompleteListener { task ->

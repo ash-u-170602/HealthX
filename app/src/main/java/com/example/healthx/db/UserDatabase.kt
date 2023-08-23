@@ -9,7 +9,8 @@ import com.example.healthx.models.UserData
 
 @Database(
     entities = [UserData::class],
-    version = 2
+    exportSchema = false,
+    version = 4
 )
 @TypeConverters(StatsTypeConverter::class)
 abstract class UserDatabase : RoomDatabase() {

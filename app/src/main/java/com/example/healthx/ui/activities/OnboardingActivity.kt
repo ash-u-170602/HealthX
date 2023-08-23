@@ -10,6 +10,14 @@ import com.example.healthx.databinding.ActivityOnboardingBinding
 class OnboardingActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityOnboardingBinding.inflate(layoutInflater) }
+
+    companion object{
+
+        var key: String? = null
+
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -23,4 +31,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         
     }
+
+
+
 }

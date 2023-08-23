@@ -8,9 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.healthx.auth.AuthViewModel
 import com.example.healthx.databinding.UserSignupFragmentBinding
+import com.example.healthx.db.DatabaseViewModel
+import com.example.healthx.db.DatabaseViewModelProviderFactory
+import com.example.healthx.db.UserDao
+import com.example.healthx.db.UserDatabase
+import com.example.healthx.repository.UserRepository
+import com.example.healthx.ui.activities.MainActivity
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.util.Constants.Companion.RC_SIGN_IN
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -23,7 +30,8 @@ import com.google.firebase.database.FirebaseDatabase
 class UserSignUpFragment : Fragment() {
 
     private val binding by lazy { UserSignupFragmentBinding.inflate(layoutInflater) }
-    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by activityViewModels()
+    private lateinit var databaseViewModel: DatabaseViewModel
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -32,9 +40,16 @@ class UserSignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
         auth = FirebaseAuth.getInstance()
 
+        val repository = UserRepository(UserDatabase(requireContext()))
+        val databaseViewModelProviderFactory =
+            DatabaseViewModelProviderFactory((activity as MainActivity).application, repository)
+
+        databaseViewModel = ViewModelProvider(
+            requireContext(),
+            databaseViewModelProviderFactory
+        )[DatabaseViewModel::class.java]
 
         if (auth.currentUser != null) {
             moveToOnboardingScreen()
@@ -75,6 +90,8 @@ class UserSignUpFragment : Fragment() {
         binding.google.setOnClickListener {
             viewModel.signInWithGoogle()
         }
+
+
 
 
         super.onViewCreated(view, savedInstanceState)
