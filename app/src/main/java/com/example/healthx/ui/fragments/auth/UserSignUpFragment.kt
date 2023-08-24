@@ -9,29 +9,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.healthx.auth.AuthViewModel
 import com.example.healthx.databinding.UserSignupFragmentBinding
 import com.example.healthx.db.DatabaseViewModel
-import com.example.healthx.db.DatabaseViewModelProviderFactory
-import com.example.healthx.db.UserDao
-import com.example.healthx.db.UserDatabase
-import com.example.healthx.repository.UserRepository
-import com.example.healthx.ui.activities.MainActivity
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.util.Constants.Companion.RC_SIGN_IN
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 
 class UserSignUpFragment : Fragment() {
 
     private val binding by lazy { UserSignupFragmentBinding.inflate(layoutInflater) }
     private val viewModel: AuthViewModel by activityViewModels()
-    private lateinit var databaseViewModel: DatabaseViewModel
+    private val databaseViewModel: DatabaseViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -42,14 +35,6 @@ class UserSignUpFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
 
-        val repository = UserRepository(UserDatabase(requireContext()))
-        val databaseViewModelProviderFactory =
-            DatabaseViewModelProviderFactory((activity as MainActivity).application, repository)
-
-        databaseViewModel = ViewModelProvider(
-            requireContext(),
-            databaseViewModelProviderFactory
-        )[DatabaseViewModel::class.java]
 
         if (auth.currentUser != null) {
             moveToOnboardingScreen()
@@ -107,7 +92,7 @@ class UserSignUpFragment : Fragment() {
             )
             task.addOnCompleteListener { authTask ->
                 if (authTask.isSuccessful) {
-                    viewModel.saveUserDataToFirebase(auth.currentUser)
+                    databaseViewModel.saveUserDataToDatabase(auth.currentUser)
                     moveToOnboardingScreen()
                 } else {
                     // Handle authentication failure

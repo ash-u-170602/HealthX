@@ -10,18 +10,19 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import com.example.healthx.R
 import com.example.healthx.auth.AuthViewModel
 import com.example.healthx.databinding.MenuFragmentBinding
+import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.ui.fragments.BaseFragment
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -32,7 +33,9 @@ class MenuFragment : BaseFragment() {
 
     private val binding by lazy { MenuFragmentBinding.inflate(layoutInflater) }
     private val viewModel: AuthViewModel by activityViewModels()
+    private val databaseViewModel: DatabaseViewModel by activityViewModels()
     private lateinit var database: FirebaseDatabase
+    private lateinit var auth: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,12 +50,7 @@ class MenuFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
-
-
-
-
+        auth = FirebaseAuth.getInstance()
 
         return binding.root
     }
@@ -63,33 +61,42 @@ class MenuFragment : BaseFragment() {
 
         binding.time.text = setGreet()
 
-        val dataReference = database.getReference("Users")
+//        val dataReference = database.getReference("Users")
+//
+//        viewModel.userKey.observe(viewLifecycleOwner){key->
+//            if (key != null) {
+//
+//                Toast.makeText(requireContext(), key, Toast.LENGTH_SHORT).show()
+//                dataReference.child(key).get()
+//                    .addOnCompleteListener { task ->
+//                        if (task.isSuccessful) {
+//                            if (task.result.exists()) {
+//
+//                                val dataSnapshot = task.result
+//                                val userName = dataSnapshot.child("userName").value
+//                                val profileUri = dataSnapshot.child("profilePictureUrl").value
+//
+//                                binding.userName.text = getFirstTwoWords(userName.toString())
+//                                Glide.with(requireContext())
+//                                    .load(profileUri)
+//                                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
+//                                    .into(binding.imageView)
+//
+//                            }
+//                        }
+//                    }
+//            }
+//        }
 
-        viewModel.userKey.observe(viewLifecycleOwner){key->
-            if (key != null) {
 
-                Toast.makeText(requireContext(), key, Toast.LENGTH_SHORT).show()
-                dataReference.child(key).get()
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            if (task.result.exists()) {
+        databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) { userData ->
 
-                                val dataSnapshot = task.result
-                                val userName = dataSnapshot.child("userName").value
-                                val profileUri = dataSnapshot.child("profilePictureUrl").value
-
-                                binding.userName.text = getFirstTwoWords(userName.toString())
-                                Glide.with(requireContext())
-                                    .load(profileUri)
-                                    .apply(RequestOptions.bitmapTransform(CircleCrop()))
-                                    .into(binding.imageView)
-
-                            }
-                        }
-                    }
-            }
+            binding.userName.text = getFirstTwoWords(userData.userName.toString())
+            Glide.with(requireContext())
+                .load(userData.profilePictureUrl)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .into(binding.imageView)
         }
-
 
 
         val customList = listOf(
@@ -179,6 +186,7 @@ class MenuFragment : BaseFragment() {
             sentence
         }
     }
+
 
 
 }

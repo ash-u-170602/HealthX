@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "userData")
 data class UserData(
     @PrimaryKey
+    @ColumnInfo(name = "id")
+    val id:Int,
     @ColumnInfo(name = "user_id")
     val userId: String,
     @ColumnInfo(name = "user_name")
@@ -15,5 +17,6 @@ data class UserData(
     val profilePictureUrl: String?,
     @ColumnInfo(name = "email")
     val email: String?,
+    @ColumnInfo(name = "stats_json")
     val stats: List<Stats>?
 )

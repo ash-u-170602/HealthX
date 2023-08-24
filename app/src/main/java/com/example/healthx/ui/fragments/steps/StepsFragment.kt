@@ -8,8 +8,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.example.healthx.R
 import com.example.healthx.databinding.StepsFragmentBinding
+import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.ui.fragments.BaseFragment
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -18,6 +23,8 @@ import com.github.mikephil.charting.data.BarEntry
 class StepsFragment : BaseFragment() {
 
     private val binding by lazy { StepsFragmentBinding.inflate(layoutInflater) }
+    private val databaseViewModel: DatabaseViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +39,18 @@ class StepsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.time.text = setGreet()
+
+
+        databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) { userData ->
+
+            binding.userName.text = getFirstTwoWords(userData.userName.toString())
+            Glide.with(requireContext())
+                .load(userData.profilePictureUrl)
+                .apply(RequestOptions.bitmapTransform(CircleCrop()))
+                .into(binding.imageView)
+
+        }
+
 
         val customList = listOf("This Week", "Last Week")
         setSpinner(customList)
@@ -116,6 +135,15 @@ class StepsFragment : BaseFragment() {
 
             }
 
+        }
+    }
+
+    private fun getFirstTwoWords(sentence: String): String {
+        val words = sentence.trim().split("\\s+".toRegex())
+        return if (words.size >= 2) {
+            "${words[0]} ${words[1]}"
+        } else {
+            sentence
         }
     }
 }

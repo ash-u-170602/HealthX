@@ -12,7 +12,6 @@ class OnboardingActivity : AppCompatActivity() {
     private val binding by lazy { ActivityOnboardingBinding.inflate(layoutInflater) }
 
     companion object{
-
         var key: String? = null
 
     }

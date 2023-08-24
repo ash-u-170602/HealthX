@@ -59,6 +59,7 @@ class AuthViewModel : ViewModel() {
     fun saveUserDataToFirebase(user: FirebaseUser?) {
         user?.let {
             val users = UserData(
+                id = 0,
                 userId = it.uid,
                 userName = it.displayName,
                 profilePictureUrl = it.photoUrl.toString(),
