@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -40,7 +41,6 @@ class StepsFragment : BaseFragment() {
 
         binding.time.text = setGreet()
 
-
         databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) { userData ->
 
             binding.userName.text = getFirstTwoWords(userData.userName.toString())
@@ -51,11 +51,17 @@ class StepsFragment : BaseFragment() {
 
         }
 
+        setSpinner()
+        serBarGraph()
 
-        val customList = listOf("This Week", "Last Week")
-        setSpinner(customList)
 
+        binding.pedometer.setOnClickListener {
+            findNavController().navigate(R.id.action_steps_fragment_to_pedometerFragment)
+        }
 
+    }
+
+    private fun serBarGraph() {
         val list: ArrayList<BarEntry> = ArrayList()
         list.add(BarEntry(1f, 1040f))
         list.add(BarEntry(2f, 2023f))
@@ -105,10 +111,11 @@ class StepsFragment : BaseFragment() {
 
             invalidate()
         }
-
     }
 
-    private fun setSpinner(customList: List<String>) {
+    private fun setSpinner() {
+
+        val customList = listOf("This Week", "Last Week")
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -146,4 +153,6 @@ class StepsFragment : BaseFragment() {
             sentence
         }
     }
+
+
 }

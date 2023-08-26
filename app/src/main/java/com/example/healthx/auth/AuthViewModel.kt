@@ -1,10 +1,6 @@
 package com.example.healthx.auth
 
-import android.app.Application
 import android.content.Intent
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +8,7 @@ import com.example.healthx.HealthXApplication
 import com.example.healthx.models.Stats
 import com.example.healthx.models.UserData
 import com.example.healthx.ui.activities.OnboardingActivity
-import com.example.healthx.util.Constants.Companion.SERVER_CLIENT_ID
+import com.example.healthx.util.Constants.SERVER_CLIENT_ID
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

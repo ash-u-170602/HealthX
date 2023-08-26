@@ -5,16 +5,29 @@
     android:id="@+id/my_nav"
     app:startDestination="@id/menu_fragment">
 
+    <action android:id="@+id/action_global_pedometerFragment"
+        app:destination="@+id/pedometerFragment"
+        app:launchSingleTop="true"/>
+
     <fragment
         android:id="@+id/menu_fragment"
         android:name="com.example.healthx.ui.fragments.menu.MenuFragment"
         android:label="MenuFragment"
-        tools:layout="@layout/menu_fragment"/>
+        tools:layout="@layout/menu_fragment">
+        <action
+            android:id="@+id/action_menu_fragment_to_pedometerFragment"
+            app:destination="@id/pedometerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/steps_fragment"
         android:name="com.example.healthx.ui.fragments.steps.StepsFragment"
         android:label="StepsFragment"
-        tools:layout="@layout/steps_fragment"/>
+        tools:layout="@layout/steps_fragment">
+        <action
+            android:id="@+id/action_steps_fragment_to_pedometerFragment"
+            app:destination="@id/pedometerFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/info_fragment"
         android:name="com.example.healthx.ui.fragments.info.InfoFragment"
@@ -25,4 +38,8 @@
         android:name="com.example.healthx.ui.fragments.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/settings_fragment"/>
+    <fragment
+        android:id="@+id/pedometerFragment"
+        android:name="com.example.healthx.ui.fragments.steps.PedometerFragment"
+        android:label="PedometerFragment" />
 </navigation>

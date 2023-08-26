@@ -13,7 +13,7 @@ import com.example.healthx.auth.AuthViewModel
 import com.example.healthx.databinding.UserSignupFragmentBinding
 import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.ui.activities.OnboardingActivity
-import com.example.healthx.util.Constants.Companion.RC_SIGN_IN
+import com.example.healthx.util.Constants.RC_SIGN_IN
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -112,7 +112,7 @@ class UserSignUpFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        auth.signOut()
+//        auth.signOut()
     }
 
 }

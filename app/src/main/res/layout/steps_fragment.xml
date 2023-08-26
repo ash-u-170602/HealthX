@@ -53,14 +53,31 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/myfont"
-        android:text="Pedometer"
-        android:textColor="@color/blackTheme"
-        android:textSize="@dimen/_30ssp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/myfont"
+            android:text="Pedometer"
+            android:textColor="@color/blackTheme"
+            android:textSize="@dimen/_30ssp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/pedometer"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_38sdp"
+            android:layout_marginStart="@dimen/_80sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_pedometer"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/footprints"
+            app:tint="@color/green" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -112,16 +129,16 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
-            android:layout_margin="@dimen/_1sdp"
             android:layout_width="match_parent"
-            app:cardCornerRadius="@dimen/_20sdp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_1sdp"
+            app:cardCornerRadius="@dimen/_20sdp">
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barGraph"
-                android:layout_marginBottom="-12dp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_220sdp" />
+                android:layout_height="@dimen/_220sdp"
+                android:layout_marginBottom="-12dp" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout

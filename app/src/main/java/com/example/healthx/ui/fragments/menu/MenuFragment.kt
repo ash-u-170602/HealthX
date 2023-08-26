@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -41,7 +42,6 @@ class MenuFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         database = FirebaseDatabase.getInstance()
-
 
     }
 
@@ -164,6 +164,9 @@ class MenuFragment : BaseFragment() {
             animateX(500)
         }
 
+        binding.pedometer.setOnClickListener {
+            findNavController().navigate(R.id.action_menu_fragment_to_pedometerFragment)
+        }
 
     }
 
@@ -186,7 +189,6 @@ class MenuFragment : BaseFragment() {
             sentence
         }
     }
-
 
 
 }
