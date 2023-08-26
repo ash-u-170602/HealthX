@@ -8,11 +8,16 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.MutableLiveData
 import com.example.healthx.R
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.util.Constants.ACTION_PAUSE_SERVICE
@@ -26,6 +31,10 @@ import com.example.healthx.util.Constants.NOTIFICATION_ID
 class StepCounterService : LifecycleService() {
 
     var isFirstWalk = true
+
+    companion object {
+        val stepCountLiveData = MutableLiveData<Float>()
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -53,6 +62,9 @@ class StepCounterService : LifecycleService() {
 
 
     private fun startForegroundService() {
+
+        countSteps()
+
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE)
                 as NotificationManager
 
@@ -69,6 +81,47 @@ class StepCounterService : LifecycleService() {
             .setContentIntent(getMainActivityPendingIntent())
 
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
+    }
+
+    private fun countSteps() {
+
+        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        if (stepCounter != null) {
+
+            val stepCounterListener = object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent?) {
+                    event?.let {
+                        if (event.sensor.type == Sensor.TYPE_STEP_COUNTER) {
+                            val stepCount = event.values[0]
+                            stepCountLiveData.postValue(stepCount)
+                        } else Toast.makeText(
+                            this@StepCounterService,
+                            "Something Went Wrong",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+
+                }
+
+                override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
+                }
+            }
+
+            sensorManager.registerListener(
+                stepCounterListener,
+                stepCounter,
+                SensorManager.SENSOR_DELAY_FASTEST
+            )
+
+        } else {
+            Toast.makeText(this, "Sensor not available", Toast.LENGTH_SHORT).show()
+            stopSelf()
+        }
+
     }
 
     private fun getMainActivityPendingIntent() = PendingIntent.getActivity(

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.healthx.databinding.PedometerFragmentBinding
@@ -43,6 +44,11 @@ class PedometerFragment : Fragment() {
 
         binding.startOrPause.setOnClickListener {
             sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
+        }
+
+        StepCounterService.stepCountLiveData.observe(viewLifecycleOwner){
+            binding.steps.text = it.toString()
+            Toast.makeText(requireContext(), "Chal rha h bhai", Toast.LENGTH_SHORT).show()
         }
 
     }
