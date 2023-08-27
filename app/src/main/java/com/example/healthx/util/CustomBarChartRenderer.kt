@@ -1,4 +1,4 @@
-package com.example.healthx.ui.fragments.steps
+package com.example.healthx.util
 
 import android.graphics.Canvas
 import android.graphics.LinearGradient

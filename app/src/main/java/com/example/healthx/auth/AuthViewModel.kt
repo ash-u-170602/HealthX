@@ -84,11 +84,11 @@ class AuthViewModel : ViewModel() {
         return auth.signInWithCredential(credential)
     }
 
-    fun returnList(): List<Stats> {
+    private fun returnList(): List<Stats> {
         val list = mutableListOf<Stats>()
-        list.add(Stats("10000", "2000", "1200", "2400", Calendar.getInstance().time))
-        list.add(Stats("10000", "5000", "1700", "7600", Calendar.getInstance().time))
-        list.add(Stats("10000", "7000", "4200", "8400", Calendar.getInstance().time))
+        list.add(Stats(10000, 2000, 1200, 2400, Calendar.getInstance().time))
+        list.add(Stats(10000, 5000, 1700, 7600, Calendar.getInstance().time))
+        list.add(Stats(10000, 7000, 4200, 8400, Calendar.getInstance().time))
 
         return list
     }

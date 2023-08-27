@@ -34,8 +34,8 @@ class DatabaseViewModel : ViewModel() {
 
     private fun returnList(): List<Stats> {
         val list = mutableListOf<Stats>()
-        list.add(Stats("0", "0", "0", "0", Calendar.getInstance().time))
-        list.add(Stats("0", "0", "0", "0", Calendar.getInstance().time))
+        list.add(Stats(0, 0, 0, 0, Calendar.getInstance().time))
+        list.add(Stats(0, 0, 0, 0, Calendar.getInstance().time))
 
         return list
     }

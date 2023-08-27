@@ -6,16 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.healthx.R
 import com.example.healthx.databinding.PedometerFragmentBinding
 import com.example.healthx.services.StepCounterService
+import com.example.healthx.util.Constants.ACTION_PAUSE_SERVICE
 import com.example.healthx.util.Constants.ACTION_START_OR_RESUME_SERVICE
+import com.example.healthx.util.Constants.ACTION_STOP_SERVICE
 
 class PedometerFragment : Fragment() {
 
     private val binding by lazy { PedometerFragmentBinding.inflate(layoutInflater) }
+    private var isWalking = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,13 +45,23 @@ class PedometerFragment : Fragment() {
             progressMax = 6000f
         }
 
+        updateUIFromServiceState()
+
         binding.startOrPause.setOnClickListener {
-            sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
+            if (!isWalking) {
+                isWalking = true
+                sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
+            } else {
+                isWalking = false
+                sendCommandToService(ACTION_STOP_SERVICE)
+            }
+
+            updateUIFromServiceState()
         }
 
-        StepCounterService.stepCountLiveData.observe(viewLifecycleOwner){
-            binding.steps.text = it.toString()
-            Toast.makeText(requireContext(), "Chal rha h bhai", Toast.LENGTH_SHORT).show()
+
+        StepCounterService.stepCountLiveData.observe(viewLifecycleOwner) {
+            binding.steps.text = it.toInt().toString()
         }
 
     }
@@ -57,6 +70,14 @@ class PedometerFragment : Fragment() {
         Intent(requireContext(), StepCounterService::class.java).also {
             it.action = action
             requireContext().startService(it)
+        }
+    }
+
+    private fun updateUIFromServiceState() {
+        if (isWalking) {
+            binding.startOrPause.setImageResource(R.drawable.baseline_pause_circle_filled_24)
+        } else {
+            binding.startOrPause.setImageResource(R.drawable.baseline_play_circle_filled_24)
         }
     }
 

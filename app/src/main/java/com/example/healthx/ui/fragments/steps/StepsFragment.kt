@@ -17,6 +17,7 @@ import com.example.healthx.R
 import com.example.healthx.databinding.StepsFragmentBinding
 import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.ui.fragments.BaseFragment
+import com.example.healthx.util.CustomBarChartRender
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry

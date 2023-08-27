@@ -27,10 +27,15 @@ import com.example.healthx.util.Constants.ACTION_STOP_SERVICE
 import com.example.healthx.util.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.healthx.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.healthx.util.Constants.NOTIFICATION_ID
+import kotlin.math.sqrt
 
 class StepCounterService : LifecycleService() {
 
-    var isFirstWalk = true
+    private var sensorManager: SensorManager? = null
+    private var stepCounterListener: SensorEventListener? = null
+
+    var totalSteps = 0f
+    private var magnitudePrevious = 0.toDouble()
 
     companion object {
         val stepCountLiveData = MutableLiveData<Float>()
@@ -41,18 +46,19 @@ class StepCounterService : LifecycleService() {
         intent?.let {
             when (it.action) {
                 ACTION_START_OR_RESUME_SERVICE -> {
-                    if (isFirstWalk) {
-                        startForegroundService()
-                        isFirstWalk = false
-                    } else Toast.makeText(this, "Resuming Service...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Resume", Toast.LENGTH_SHORT).show()
+                    startForegroundService()
                 }
 
                 ACTION_PAUSE_SERVICE -> {
-
+                    Toast.makeText(this, "Pause", Toast.LENGTH_SHORT).show()
                 }
 
                 ACTION_STOP_SERVICE -> {
-
+                    Toast.makeText(this, "Stop", Toast.LENGTH_SHORT).show()
+                    stopForeground(true)
+                    stopCount()
+                    stopSelf()
                 }
             }
         }
@@ -83,25 +89,48 @@ class StepCounterService : LifecycleService() {
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
     }
 
+    private fun stopCount() {
+        sensorManager?.unregisterListener(stepCounterListener)
+        stepCounterListener = null
+        Toast.makeText(this, totalSteps.toString(), Toast.LENGTH_SHORT).show()
+    }
+
     private fun countSteps() {
 
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val stepCounter = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
         if (stepCounter != null) {
 
-            val stepCounterListener = object : SensorEventListener {
+            stepCounterListener = object : SensorEventListener {
                 override fun onSensorChanged(event: SensorEvent?) {
                     event?.let {
-                        if (event.sensor.type == Sensor.TYPE_STEP_COUNTER) {
-                            val stepCount = event.values[0]
-                            stepCountLiveData.postValue(stepCount)
-                        } else Toast.makeText(
-                            this@StepCounterService,
-                            "Something Went Wrong",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+                            val xAcceleration = event.values[0]
+                            val yAcceleration = event.values[1]
+                            val zAcceleration = event.values[2]
+
+                            val calculator =
+                                (xAcceleration * xAcceleration + yAcceleration * yAcceleration + zAcceleration * zAcceleration).toDouble()
+
+                            val magnitude = sqrt(calculator)
+                            val magnitudeDelta = magnitude - magnitudePrevious
+                            magnitudePrevious = magnitude
+
+                            if (magnitudeDelta > 6) {
+                                stepCountLiveData.postValue(totalSteps++)
+                            }
+
+                        } else {
+                            Toast.makeText(
+                                this@StepCounterService,
+                                "Something Went Wrong",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            stopSelf()
+                        }
                     }
 
                 }
@@ -110,11 +139,10 @@ class StepCounterService : LifecycleService() {
 
                 }
             }
-
-            sensorManager.registerListener(
+            sensorManager?.registerListener(
                 stepCounterListener,
                 stepCounter,
-                SensorManager.SENSOR_DELAY_FASTEST
+                SensorManager.SENSOR_DELAY_NORMAL
             )
 
         } else {
@@ -123,6 +151,7 @@ class StepCounterService : LifecycleService() {
         }
 
     }
+
 
     private fun getMainActivityPendingIntent() = PendingIntent.getActivity(
         this,
