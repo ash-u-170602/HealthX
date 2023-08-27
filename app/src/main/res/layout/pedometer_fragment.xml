@@ -57,6 +57,57 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="@dimen/_20sdp"
+        app:cardElevation="@dimen/_2sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:src="@drawable/baseline_access_time_24"
+                app:tint="@color/green" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-5dp"
+                    android:fontFamily="@font/myfont"
+                    android:text="00:00:00"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/_15ssp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/myfont"
+                    android:text="Timer"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/_10ssp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_80sdp"
         android:layout_margin="@dimen/_20sdp"
@@ -81,6 +132,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_70sdp"
                 android:orientation="vertical">
 
                 <TextView
@@ -105,42 +157,6 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_25sdp"
-                android:layout_marginEnd="@dimen/_4sdp"
-                android:src="@drawable/baseline_access_time_24"
-                app:tint="@color/green" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_25sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="-5dp"
-                    android:fontFamily="@font/myfont"
-                    android:text="1:02"
-                    android:textColor="@color/green"
-                    android:textSize="@dimen/_10ssp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/myfont"
-                    android:text="Time"
-                    android:textColor="@color/green"
-                    android:textSize="@dimen/_10ssp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
             <ImageView
                 android:layout_width="@dimen/_20sdp"
@@ -184,7 +200,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_30sdp"
         app:cardCornerRadius="@dimen/_30sdp"
         app:cardElevation="@dimen/_2sdp">
 

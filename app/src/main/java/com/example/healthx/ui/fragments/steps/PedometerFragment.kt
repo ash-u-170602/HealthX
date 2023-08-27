@@ -41,8 +41,7 @@ class PedometerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.circularProgressBar.apply {
-            setProgressWithAnimation(2000f, 1000)
-            progressMax = 6000f
+            progressMax = 10f
         }
 
         updateUIFromServiceState()
@@ -62,6 +61,13 @@ class PedometerFragment : Fragment() {
 
         StepCounterService.stepCountLiveData.observe(viewLifecycleOwner) {
             binding.steps.text = it.toInt().toString()
+            binding.circularProgressBar.setProgressWithAnimation(it)
+        }
+
+        StepCounterService.elapsedTimeLiveData.observe(viewLifecycleOwner){
+            binding.time.text = it.toString()
+            isWalking = true
+            updateUIFromServiceState()
         }
 
     }

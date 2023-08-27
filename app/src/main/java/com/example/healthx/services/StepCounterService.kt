@@ -13,6 +13,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -34,11 +36,15 @@ class StepCounterService : LifecycleService() {
     private var sensorManager: SensorManager? = null
     private var stepCounterListener: SensorEventListener? = null
 
-    var totalSteps = 0f
+    private var totalSteps = 0f
     private var magnitudePrevious = 0.toDouble()
+
+    private var startTime: Long = 55
+    private var isTimerRunning = false
 
     companion object {
         val stepCountLiveData = MutableLiveData<Float>()
+        val elapsedTimeLiveData = MutableLiveData<String>()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -47,6 +53,7 @@ class StepCounterService : LifecycleService() {
             when (it.action) {
                 ACTION_START_OR_RESUME_SERVICE -> {
                     Toast.makeText(this, "Resume", Toast.LENGTH_SHORT).show()
+                    startTimer()
                     startForegroundService()
                 }
 
@@ -58,6 +65,7 @@ class StepCounterService : LifecycleService() {
                     Toast.makeText(this, "Stop", Toast.LENGTH_SHORT).show()
                     stopForeground(true)
                     stopCount()
+                    isTimerRunning = false
                     stopSelf()
                 }
             }
@@ -70,6 +78,7 @@ class StepCounterService : LifecycleService() {
     private fun startForegroundService() {
 
         countSteps()
+        startTime = System.currentTimeMillis()
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE)
                 as NotificationManager
@@ -83,7 +92,7 @@ class StepCounterService : LifecycleService() {
             .setOngoing(true)
             .setSmallIcon(R.drawable.round_directions_walk_24)
             .setContentTitle("Step Counting")
-            .setContentText("00:00:00")
+            .setContentText("Tap to see progress")
             .setContentIntent(getMainActivityPendingIntent())
 
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
@@ -93,6 +102,7 @@ class StepCounterService : LifecycleService() {
         sensorManager?.unregisterListener(stepCounterListener)
         stepCounterListener = null
         Toast.makeText(this, totalSteps.toString(), Toast.LENGTH_SHORT).show()
+
     }
 
     private fun countSteps() {
@@ -118,7 +128,7 @@ class StepCounterService : LifecycleService() {
                             val magnitudeDelta = magnitude - magnitudePrevious
                             magnitudePrevious = magnitude
 
-                            if (magnitudeDelta > 6) {
+                            if (magnitudeDelta >= 0) {
                                 stepCountLiveData.postValue(totalSteps++)
                             }
 
@@ -171,5 +181,31 @@ class StepCounterService : LifecycleService() {
         )
         notificationManager.createNotificationChannel(channel)
     }
+
+
+    private fun startTimer() {
+        isTimerRunning = true
+
+        val handler = Handler(Looper.getMainLooper())
+        handler.post(object : Runnable {
+            override fun run() {
+                if (isTimerRunning) {
+                    val elapsedTime = System.currentTimeMillis() - startTime
+                    val formattedTime = formatElapsedTime(elapsedTime)
+                    elapsedTimeLiveData.postValue(formattedTime)
+                    handler.postDelayed(this, 1000) // Update every second
+                }
+            }
+        })
+    }
+
+    private fun formatElapsedTime(elapsedTimeMillis: Long): String {
+        val seconds = (elapsedTimeMillis / 1000).toInt() % 60
+        val minutes = (elapsedTimeMillis / (1000 * 60) % 60).toInt()
+        val hours = (elapsedTimeMillis / (1000 * 60 * 60)).toInt()
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+    }
+
 
 }
