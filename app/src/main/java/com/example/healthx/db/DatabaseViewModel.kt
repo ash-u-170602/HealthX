@@ -32,10 +32,13 @@ class DatabaseViewModel : ViewModel() {
         }
     }
 
+    fun saveStatsDetailsToDatabase(steps: Int = 0, calories: Int = 0, distance: Int = 0): Stats{
+        return Stats(1000, steps, calories, distance, Calendar.getInstance().time)
+    }
+
     private fun returnList(): List<Stats> {
         val list = mutableListOf<Stats>()
-        list.add(Stats(0, 0, 0, 0, Calendar.getInstance().time))
-        list.add(Stats(0, 0, 0, 0, Calendar.getInstance().time))
+        list.add(saveStatsDetailsToDatabase())
 
         return list
     }

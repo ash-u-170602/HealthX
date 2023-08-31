@@ -18,9 +18,12 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.healthx.R
+import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.util.Constants.ACTION_PAUSE_SERVICE
 import com.example.healthx.util.Constants.ACTION_SHOW_PEDOMETER_FRAGMENT
@@ -29,6 +32,7 @@ import com.example.healthx.util.Constants.ACTION_STOP_SERVICE
 import com.example.healthx.util.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.healthx.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.healthx.util.Constants.NOTIFICATION_ID
+import com.example.healthx.util.todayDate
 import kotlin.math.sqrt
 
 class StepCounterService : LifecycleService() {
@@ -36,13 +40,13 @@ class StepCounterService : LifecycleService() {
     private var sensorManager: SensorManager? = null
     private var stepCounterListener: SensorEventListener? = null
 
-    private var totalSteps = 0f
     private var magnitudePrevious = 0.toDouble()
 
     private var startTime: Long = 55
     private var isTimerRunning = false
 
     companion object {
+        var totalSteps = 0f
         val stepCountLiveData = MutableLiveData<Float>()
         val elapsedTimeLiveData = MutableLiveData<String>()
     }
@@ -102,7 +106,6 @@ class StepCounterService : LifecycleService() {
         sensorManager?.unregisterListener(stepCounterListener)
         stepCounterListener = null
         Toast.makeText(this, totalSteps.toString(), Toast.LENGTH_SHORT).show()
-
     }
 
     private fun countSteps() {
@@ -128,7 +131,7 @@ class StepCounterService : LifecycleService() {
                             val magnitudeDelta = magnitude - magnitudePrevious
                             magnitudePrevious = magnitude
 
-                            if (magnitudeDelta >= 0) {
+                            if (magnitudeDelta >= 10) {
                                 stepCountLiveData.postValue(totalSteps++)
                             }
 
