@@ -18,9 +18,14 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import com.example.healthx.R
+import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.util.Constants.ACTION_PAUSE_SERVICE
 import com.example.healthx.util.Constants.ACTION_SHOW_PEDOMETER_FRAGMENT
@@ -32,6 +37,7 @@ import com.example.healthx.util.Constants.NOTIFICATION_ID
 import kotlin.math.sqrt
 
 class StepCounterService : LifecycleService() {
+
 
     private var sensorManager: SensorManager? = null
     private var stepCounterListener: SensorEventListener? = null
@@ -46,6 +52,7 @@ class StepCounterService : LifecycleService() {
         val stepCountLiveData = MutableLiveData<Float>()
         val elapsedTimeLiveData = MutableLiveData<String>()
     }
+
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -101,7 +108,6 @@ class StepCounterService : LifecycleService() {
     private fun stopCount() {
         sensorManager?.unregisterListener(stepCounterListener)
         stepCounterListener = null
-        Toast.makeText(this, totalSteps.toString(), Toast.LENGTH_SHORT).show()
     }
 
     private fun countSteps() {
@@ -160,14 +166,18 @@ class StepCounterService : LifecycleService() {
     }
 
 
-    private fun getMainActivityPendingIntent() = PendingIntent.getActivity(
-        this,
-        0,
-        Intent(this, OnboardingActivity::class.java).also {
-            it.action = ACTION_SHOW_PEDOMETER_FRAGMENT
-        },
-        FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
-    )
+    private fun getMainActivityPendingIntent(): PendingIntent {
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, OnboardingActivity::class.java).also {
+                it.action = ACTION_SHOW_PEDOMETER_FRAGMENT
+            },
+            FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
+        )
+
+        return pendingIntent
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(notificationManager: NotificationManager) {

@@ -16,7 +16,6 @@ class OnboardingActivity : AppCompatActivity() {
 
     companion object {
         var key: String? = null
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +29,6 @@ class OnboardingActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.container) as NavHostFragment
         val navController = navHostFragment.navController
         bottomNav.setupWithNavController(navController)
-
-
     }
 
     override fun onNewIntent(intent: Intent?) {

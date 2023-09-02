@@ -16,6 +16,7 @@ import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.services.StepCounterService
 import com.example.healthx.util.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.healthx.util.Constants.ACTION_STOP_SERVICE
+import com.example.healthx.util.todayDate
 
 class PedometerFragment : Fragment() {
 
@@ -50,9 +51,9 @@ class PedometerFragment : Fragment() {
 
         databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) {
             currSteps = it.last().steps
+            StepCounterService.totalSteps = currSteps.toFloat()
             binding.steps.text = currSteps.toString()
             binding.circularProgressBar.progress = currSteps.toFloat()
-            StepCounterService.totalSteps = currSteps.toFloat()
         }
 
         updateUIFromServiceState()
@@ -63,6 +64,8 @@ class PedometerFragment : Fragment() {
                 sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
             } else {
                 isWalking = false
+                Toast.makeText(requireContext(), currSteps.toString(), Toast.LENGTH_SHORT).show()
+                databaseViewModel.updatePedometerDetails(todayDate(), currSteps, 0, 0)
                 sendCommandToService(ACTION_STOP_SERVICE)
             }
 
