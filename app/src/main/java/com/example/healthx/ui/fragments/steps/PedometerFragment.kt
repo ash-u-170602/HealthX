@@ -44,16 +44,15 @@ class PedometerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        binding.circularProgressBar.apply {
+            progressMax = 50f
+        }
 
         databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) {
             currSteps = it.last().steps
             binding.steps.text = currSteps.toString()
+            binding.circularProgressBar.progress = currSteps.toFloat()
             StepCounterService.totalSteps = currSteps.toFloat()
-        }
-
-        binding.circularProgressBar.apply {
-            progressMax = 10f
         }
 
         updateUIFromServiceState()

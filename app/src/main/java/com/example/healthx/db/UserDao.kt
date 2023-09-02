@@ -16,4 +16,7 @@ interface UserDao {
     @Query("SELECT * FROM USERDATA")
     fun getUserData(): LiveData<List<UserData>>
 
+    @Query("UPDATE userData SET steps = :newSteps, calories = :newCalories, distance = :newDistance WHERE id = :userId")
+    suspend fun updatePedometerDetails(userId: String, newSteps: Int, newCalories: Int, newDistance: Int)
+
 }

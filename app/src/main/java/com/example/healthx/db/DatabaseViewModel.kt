@@ -45,6 +45,12 @@ class DatabaseViewModel : ViewModel() {
     }
 
 
+    fun updatePedometerDetails(userId: String, newSteps: Int, newCalories: Int, newDistance: Int) =
+        viewModelScope.launch {
+            repository.updatePedometerDetails(userId, newSteps, newCalories, newDistance)
+        }
+
+
     private fun getUserData() = repository.getUserData()
 
 }
