@@ -14,6 +14,6 @@ interface UserDao {
     suspend fun upsert(user: UserData)
 
     @Query("SELECT * FROM USERDATA")
-    fun getUserData(): LiveData<UserData>
+    fun getUserData(): LiveData<List<UserData>>
 
 }

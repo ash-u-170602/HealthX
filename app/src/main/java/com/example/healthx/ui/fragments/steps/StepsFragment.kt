@@ -42,7 +42,9 @@ class StepsFragment : BaseFragment() {
 
         binding.time.text = setGreet()
 
-        databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) { userData ->
+        databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) {
+
+            val userData = it.last()
 
             binding.userName.text = getFirstTwoWords(userData.userName.toString())
             Glide.with(requireContext())

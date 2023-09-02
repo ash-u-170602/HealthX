@@ -18,12 +18,9 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.healthx.R
-import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.util.Constants.ACTION_PAUSE_SERVICE
 import com.example.healthx.util.Constants.ACTION_SHOW_PEDOMETER_FRAGMENT
@@ -32,7 +29,6 @@ import com.example.healthx.util.Constants.ACTION_STOP_SERVICE
 import com.example.healthx.util.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.healthx.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.healthx.util.Constants.NOTIFICATION_ID
-import com.example.healthx.util.todayDate
 import kotlin.math.sqrt
 
 class StepCounterService : LifecycleService() {
@@ -42,7 +38,7 @@ class StepCounterService : LifecycleService() {
 
     private var magnitudePrevious = 0.toDouble()
 
-    private var startTime: Long = 55
+    private var startTime: Long = 0
     private var isTimerRunning = false
 
     companion object {
@@ -110,7 +106,6 @@ class StepCounterService : LifecycleService() {
 
     private fun countSteps() {
 
-
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val stepCounter = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
@@ -145,7 +140,6 @@ class StepCounterService : LifecycleService() {
                             stopSelf()
                         }
                     }
-
                 }
 
                 override fun onAccuracyChanged(p0: Sensor?, p1: Int) {

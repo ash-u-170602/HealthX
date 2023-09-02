@@ -92,7 +92,7 @@ class UserSignUpFragment : Fragment() {
             )
             task.addOnCompleteListener { authTask ->
                 if (authTask.isSuccessful) {
-                    databaseViewModel.saveUserDataToDatabase(auth.currentUser)
+                    databaseViewModel.saveDefaultUserDataToDatabase(auth.currentUser)
                     moveToOnboardingScreen()
                 } else {
                     // Handle authentication failure

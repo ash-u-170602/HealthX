@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.healthx.HealthXApplication
-import com.example.healthx.models.Stats
 import com.example.healthx.models.UserData
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.util.Constants.SERVER_CLIENT_ID
@@ -52,7 +51,7 @@ class AuthViewModel : ViewModel() {
         mGoogleSignInClient = GoogleSignIn.getClient(HealthXApplication.instance!!.baseContext, gso)
     }
 
-    fun saveUserDataToFirebase(user: FirebaseUser?) {
+    /*fun saveUserDataToFirebase(user: FirebaseUser?) {
         user?.let {
             val users = UserData(
                 id = 0,
@@ -67,7 +66,7 @@ class AuthViewModel : ViewModel() {
             setUserKey(key)
             database.reference.child("Users").child(key).setValue(users)
         }
-    }
+    }*/
 
     fun signInWithGoogle() {
         mGoogleSignInClient.signOut().addOnCompleteListener {
@@ -84,14 +83,6 @@ class AuthViewModel : ViewModel() {
         return auth.signInWithCredential(credential)
     }
 
-    private fun returnList(): List<Stats> {
-        val list = mutableListOf<Stats>()
-        list.add(Stats(10000, 2000, 1200, 2400, Calendar.getInstance().time))
-        list.add(Stats(10000, 5000, 1700, 7600, Calendar.getInstance().time))
-        list.add(Stats(10000, 7000, 4200, 8400, Calendar.getInstance().time))
-
-        return list
-    }
 
 
     sealed class AuthState {

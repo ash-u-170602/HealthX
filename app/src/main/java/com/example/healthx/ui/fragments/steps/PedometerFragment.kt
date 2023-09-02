@@ -14,7 +14,6 @@ import com.example.healthx.R
 import com.example.healthx.databinding.PedometerFragmentBinding
 import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.services.StepCounterService
-import com.example.healthx.util.Constants.ACTION_PAUSE_SERVICE
 import com.example.healthx.util.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.healthx.util.Constants.ACTION_STOP_SERVICE
 
@@ -45,8 +44,10 @@ class PedometerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        databaseViewModel.userDataLiveData.observe(viewLifecycleOwner){
-            currSteps = it?.stats?.last()!!.steps
+
+
+        databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) {
+            currSteps = it.last().steps
             binding.steps.text = currSteps.toString()
             StepCounterService.totalSteps = currSteps.toFloat()
         }
@@ -76,12 +77,11 @@ class PedometerFragment : Fragment() {
             currSteps = it.toInt()
         }
 
-        StepCounterService.elapsedTimeLiveData.observe(viewLifecycleOwner){
+        StepCounterService.elapsedTimeLiveData.observe(viewLifecycleOwner) {
             binding.time.text = it.toString()
             isWalking = true
             updateUIFromServiceState()
         }
-
 
 
     }
