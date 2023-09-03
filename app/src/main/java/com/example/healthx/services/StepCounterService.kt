@@ -132,7 +132,7 @@ class StepCounterService : LifecycleService() {
                             val magnitudeDelta = magnitude - magnitudePrevious
                             magnitudePrevious = magnitude
 
-                            if (magnitudeDelta >= 10) {
+                            if (magnitudeDelta >= 0) {
                                 stepCountLiveData.postValue(totalSteps++)
                             }
 
@@ -149,7 +149,7 @@ class StepCounterService : LifecycleService() {
                 }
 
                 override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-
+//                    Leaving it empty
                 }
             }
             sensorManager?.registerListener(

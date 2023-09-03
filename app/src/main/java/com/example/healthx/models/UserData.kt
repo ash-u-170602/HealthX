@@ -23,7 +23,7 @@ data class UserData(
     @ColumnInfo(name = "steps")
     val steps: Int,
     @ColumnInfo(name = "calories")
-    val calories: Int,
+    val calories: Float,
     @ColumnInfo(name = "distance")
-    val distance: Int
+    val distance: Float
 )

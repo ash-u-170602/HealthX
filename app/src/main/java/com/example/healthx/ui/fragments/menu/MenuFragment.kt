@@ -123,11 +123,11 @@ class MenuFragment : BaseFragment() {
                 position: Int,
                 id: Long
             ) {
-                Toast.makeText(
+                /*Toast.makeText(
                     requireContext(),
                     "Selected ${adapterView?.getItemAtPosition(position).toString()}",
                     Toast.LENGTH_SHORT
-                ).show()
+                ).show()*/
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

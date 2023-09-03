@@ -12,8 +12,8 @@ class UserRepository(
     suspend fun updatePedometerDetails(
         userId: String,
         newSteps: Int,
-        newCalories: Int,
-        newDistance: Int
+        newCalories: Float,
+        newDistance: Float
     ) = db.getUserDao().updatePedometerDetails(
         userId, newSteps, newCalories, newDistance
     )

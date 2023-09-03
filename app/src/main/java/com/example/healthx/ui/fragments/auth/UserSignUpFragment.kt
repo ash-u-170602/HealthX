@@ -35,7 +35,6 @@ class UserSignUpFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
 
-
         if (auth.currentUser != null) {
             moveToOnboardingScreen()
         }

@@ -10,7 +10,7 @@ import com.example.healthx.models.UserData
 @Database(
     entities = [UserData::class],
     exportSchema = false,
-    version = 7
+    version = 8
 )
 abstract class UserDatabase : RoomDatabase() {
 

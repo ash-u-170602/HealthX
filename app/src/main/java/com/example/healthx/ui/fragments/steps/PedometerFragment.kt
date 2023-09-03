@@ -24,6 +24,8 @@ class PedometerFragment : Fragment() {
     private var isWalking = false
     private val databaseViewModel: DatabaseViewModel by activityViewModels()
     private var currSteps: Int = 0
+    private var currCalories: Float = 0f
+    private var currDistance: Float = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,10 +52,17 @@ class PedometerFragment : Fragment() {
         }
 
         databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) {
-            currSteps = it.last().steps
+            val data = it.last()
+            currSteps = data.steps
+            currCalories = data.calories
+            currDistance = data.distance
             StepCounterService.totalSteps = currSteps.toFloat()
-            binding.steps.text = currSteps.toString()
-            binding.circularProgressBar.progress = currSteps.toFloat()
+            binding.apply {
+                steps.text = currSteps.toString()
+                calories.text = currCalories.toString()
+                distance.text = currDistance.toString()
+                circularProgressBar.progress = currSteps.toFloat()
+            }
         }
 
         updateUIFromServiceState()
@@ -65,7 +74,12 @@ class PedometerFragment : Fragment() {
             } else {
                 isWalking = false
                 Toast.makeText(requireContext(), currSteps.toString(), Toast.LENGTH_SHORT).show()
-                databaseViewModel.updatePedometerDetails(todayDate(), currSteps, 0, 0)
+                databaseViewModel.updatePedometerDetails(
+                    todayDate(),
+                    currSteps,
+                    currCalories,
+                    currDistance
+                )
                 sendCommandToService(ACTION_STOP_SERVICE)
             }
 
@@ -76,15 +90,19 @@ class PedometerFragment : Fragment() {
         StepCounterService.stepCountLiveData.observe(viewLifecycleOwner) {
             binding.steps.text = it.toInt().toString()
             binding.circularProgressBar.setProgressWithAnimation(it)
+            binding.calories.text = String.format("%.2f", getCalculatedCalories(it))
+            binding.distance.text = String.format("%.2f", getCalculatedDistance(it))
             currSteps = it.toInt()
+            currCalories = getCalculatedCalories(it).toFloat()
+            currDistance = getCalculatedDistance(it).toFloat()
         }
+
 
         StepCounterService.elapsedTimeLiveData.observe(viewLifecycleOwner) {
             binding.time.text = it.toString()
             isWalking = true
             updateUIFromServiceState()
         }
-
 
     }
 
@@ -103,5 +121,8 @@ class PedometerFragment : Fragment() {
         }
     }
 
+    private fun getCalculatedCalories(steps: Float) = steps * 0.03
+
+    private fun getCalculatedDistance(steps: Float) = steps * 0.76
 
 }

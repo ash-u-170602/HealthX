@@ -37,15 +37,15 @@ class DatabaseViewModel : ViewModel() {
                 email = it.email,
                 totalSteps = 0,
                 steps = 0,
-                calories = 0,
-                distance = 0
+                calories = 0f,
+                distance = 0f
             )
             repository.upsert(user)
         }
     }
 
 
-    fun updatePedometerDetails(userId: String, newSteps: Int, newCalories: Int, newDistance: Int) =
+    fun updatePedometerDetails(userId: String, newSteps: Int, newCalories: Float, newDistance: Float) =
         viewModelScope.launch {
             repository.updatePedometerDetails(userId, newSteps, newCalories, newDistance)
         }

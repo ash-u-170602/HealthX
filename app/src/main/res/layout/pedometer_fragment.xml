@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/myfont"
-                    android:text="Kilometers"
+                    android:text="Meters"
                     android:textColor="@color/green"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
