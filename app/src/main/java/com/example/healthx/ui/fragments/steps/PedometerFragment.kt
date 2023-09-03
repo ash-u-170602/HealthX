@@ -21,8 +21,8 @@ import com.example.healthx.util.todayDate
 class PedometerFragment : Fragment() {
 
     private val binding by lazy { PedometerFragmentBinding.inflate(layoutInflater) }
-    private var isWalking = false
     private val databaseViewModel: DatabaseViewModel by activityViewModels()
+    private var isWalking = false
     private var currSteps: Int = 0
     private var currCalories: Float = 0f
     private var currDistance: Float = 0f
@@ -124,5 +124,15 @@ class PedometerFragment : Fragment() {
     private fun getCalculatedCalories(steps: Float) = steps * 0.03
 
     private fun getCalculatedDistance(steps: Float) = steps * 0.76
+
+    override fun onPause() {
+        super.onPause()
+        databaseViewModel.updatePedometerDetails(
+            todayDate(),
+            currSteps,
+            currCalories,
+            currDistance
+        )
+    }
 
 }
