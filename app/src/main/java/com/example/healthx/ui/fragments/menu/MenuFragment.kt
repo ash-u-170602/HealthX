@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -26,7 +25,6 @@ import com.github.mikephil.charting.data.PieEntry
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -37,8 +35,6 @@ class MenuFragment : BaseFragment() {
     private val databaseViewModel: DatabaseViewModel by activityViewModels()
     private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
-
-    private var dataList: List<>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +88,6 @@ class MenuFragment : BaseFragment() {
 
 
         databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) {
-
             val userData = it.last()
             binding.userName.text = getFirstTwoWords(userData.userName.toString())
             Glide.with(requireContext())
@@ -105,35 +100,6 @@ class MenuFragment : BaseFragment() {
         setSpinner()
 
 
-        val list: ArrayList<PieEntry> = ArrayList()
-        list.add(PieEntry(8000f))
-        list.add(PieEntry(2000f))
-
-        val pieDataSet = PieDataSet(list, "")
-
-        val customColors = mutableListOf(
-            ContextCompat.getColor(requireContext(), R.color.theme),
-            ContextCompat.getColor(requireContext(), R.color.themeHeavy)
-        )
-
-        pieDataSet.colors = customColors
-        pieDataSet.sliceSpace = 4f
-
-        pieDataSet.valueTextSize = 0f
-
-        val pieData = PieData(pieDataSet)
-        binding.pieChart.apply {
-            data = pieData
-            description.text = ""
-            transparentCircleRadius = 0f
-            isDrawHoleEnabled = false
-            legend.isEnabled = false
-            isRotationEnabled = false
-            setTouchEnabled(false)
-            animateY(800)
-            animateX(500)
-        }
-
         binding.pedometer.setOnClickListener {
             findNavController().navigate(R.id.action_menu_fragment_to_pedometerFragment)
         }
@@ -141,48 +107,83 @@ class MenuFragment : BaseFragment() {
     }
 
     private fun setSpinner() {
+        // Observe the userDataLiveData
+        databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) { userDataList ->
+            // Extract the list of dates from your LiveData
+            val dateList = userDataList.map { formatDate(it.idAsDate) }.toMutableList()
+            dateList.reverse()
+            dateList[0] = "Today"
+            dateList[1] = "Yesterday"
 
-        val customList = listOf(
-            "Today",
-            "Yesterday",
-            formatDate(getDayBeforeYesterday(2)),
-            formatDate(getDayBeforeYesterday(3)),
-            formatDate(getDayBeforeYesterday(4))
-        )
+            // Create an adapter with the extracted dateList
+            val adapter = ArrayAdapter(
+                requireContext(),
+                R.layout.custom_spinner_layout,
+                dateList
+            )
 
-        val adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.custom_spinner_layout,
-            customList
-        )
+            // Set the adapter for your spinner
+            binding.spinner.adapter = adapter
 
-        binding.spinner.adapter = adapter
-        binding.spinner.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                adapterView: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            binding.spinner.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val userData = userDataList[userDataList.size - position - 1]
+                    binding.apply {
+                        numberOfCurrentSteps.text = userData.steps.toString()
+                        calories.text = userData.calories.toInt().toString()
+                        numberOfTotalSteps.text = userData.totalSteps.toString()
 
+                    }
+
+                    val list: ArrayList<PieEntry> = ArrayList()
+                    list.add(PieEntry(userData.steps.toFloat()))
+                    list.add(PieEntry((userData.totalSteps - userData.steps).toFloat()))
+
+                    val pieDataSet = PieDataSet(list, "")
+
+                    val customColors = mutableListOf(
+                        ContextCompat.getColor(requireContext(), R.color.themeHeavy),
+                        ContextCompat.getColor(requireContext(), R.color.theme)
+                    )
+
+                    pieDataSet.colors = customColors
+                    pieDataSet.sliceSpace = 1f
+
+                    pieDataSet.valueTextSize = 0f
+
+                    val pieData = PieData(pieDataSet)
+                    binding.pieChart.apply {
+                        data = pieData
+                        description.isEnabled = false
+                        transparentCircleRadius = 0f
+                        isDrawHoleEnabled = false
+                        legend.isEnabled = false
+                        isRotationEnabled = false
+                        setTouchEnabled(false)
+                        animateY(800)
+                        animateX(500)
+                    }
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                }
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
 
         }
     }
 
-    private fun getDayBeforeYesterday(day: Int): Date {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_YEAR, -day)
-        return calendar.time
-    }
-
-    private fun formatDate(date: Date): String {
-        val format = SimpleDateFormat("dd MMM", Locale.getDefault())
-        return format.format(date)
+    private fun formatDate(dateString: String): String {
+        val inputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.US)
+        val date = inputFormat.parse(dateString) as Date
+        val outputFormat = SimpleDateFormat("d MMM", Locale.US)
+        return outputFormat.format(date)
     }
 
     private fun getFirstTwoWords(sentence: String): String {
