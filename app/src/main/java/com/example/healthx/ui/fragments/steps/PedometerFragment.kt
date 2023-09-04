@@ -47,9 +47,6 @@ class PedometerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.circularProgressBar.apply {
-            progressMax = 50f
-        }
 
         databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) {
             val data = it.last()
@@ -58,6 +55,7 @@ class PedometerFragment : Fragment() {
             currDistance = data.distance
             StepCounterService.totalSteps = currSteps.toFloat()
             binding.apply {
+                circularProgressBar.progressMax = data.totalSteps.toFloat()
                 steps.text = currSteps.toString()
                 calories.text = currCalories.toString()
                 distance.text = currDistance.toString()

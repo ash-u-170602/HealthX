@@ -35,7 +35,7 @@ class DatabaseViewModel : ViewModel() {
                 userName = it.displayName,
                 profilePictureUrl = it.photoUrl.toString(),
                 email = it.email,
-                totalSteps = 0,
+                totalSteps = 10000,
                 steps = 0,
                 calories = 0f,
                 distance = 0f

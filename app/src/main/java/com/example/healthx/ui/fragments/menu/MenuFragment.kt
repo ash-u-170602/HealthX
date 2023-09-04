@@ -38,6 +38,8 @@ class MenuFragment : BaseFragment() {
     private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
 
+    private var dataList: List<>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +94,6 @@ class MenuFragment : BaseFragment() {
         databaseViewModel.userDataLiveData.observe(viewLifecycleOwner) {
 
             val userData = it.last()
-
             binding.userName.text = getFirstTwoWords(userData.userName.toString())
             Glide.with(requireContext())
                 .load(userData.profilePictureUrl)
@@ -101,40 +102,7 @@ class MenuFragment : BaseFragment() {
         }
 
 
-        val customList = listOf(
-            "Today",
-            "Yesterday",
-            formatDate(getDayBeforeYesterday(2)),
-            formatDate(getDayBeforeYesterday(3)),
-            formatDate(getDayBeforeYesterday(4))
-        )
-
-        val adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.custom_spinner_layout,
-            customList
-        )
-
-        binding.spinner.adapter = adapter
-        binding.spinner.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(
-                adapterView: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                /*Toast.makeText(
-                    requireContext(),
-                    "Selected ${adapterView?.getItemAtPosition(position).toString()}",
-                    Toast.LENGTH_SHORT
-                ).show()*/
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-        }
+        setSpinner()
 
 
         val list: ArrayList<PieEntry> = ArrayList()
@@ -172,9 +140,43 @@ class MenuFragment : BaseFragment() {
 
     }
 
+    private fun setSpinner() {
+
+        val customList = listOf(
+            "Today",
+            "Yesterday",
+            formatDate(getDayBeforeYesterday(2)),
+            formatDate(getDayBeforeYesterday(3)),
+            formatDate(getDayBeforeYesterday(4))
+        )
+
+        val adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.custom_spinner_layout,
+            customList
+        )
+
+        binding.spinner.adapter = adapter
+        binding.spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+    }
+
     private fun getDayBeforeYesterday(day: Int): Date {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_YEAR, -day) // Subtract 2 days to get the day before yesterday
+        calendar.add(Calendar.DAY_OF_YEAR, -day)
         return calendar.time
     }
 
