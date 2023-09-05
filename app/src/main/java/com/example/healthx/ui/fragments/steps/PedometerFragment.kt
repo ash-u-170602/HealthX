@@ -14,11 +14,12 @@ import com.example.healthx.R
 import com.example.healthx.databinding.PedometerFragmentBinding
 import com.example.healthx.db.DatabaseViewModel
 import com.example.healthx.services.StepCounterService
+import com.example.healthx.ui.fragments.BaseFragment
 import com.example.healthx.util.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.healthx.util.Constants.ACTION_STOP_SERVICE
 import com.example.healthx.util.todayDate
 
-class PedometerFragment : Fragment() {
+class PedometerFragment : BaseFragment() {
 
     private val binding by lazy { PedometerFragmentBinding.inflate(layoutInflater) }
     private val databaseViewModel: DatabaseViewModel by activityViewModels()
@@ -32,6 +33,7 @@ class PedometerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        navigationVisibility(false)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(

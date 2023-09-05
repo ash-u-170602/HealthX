@@ -34,6 +34,7 @@ class UserSignUpFragment : Fragment() {
     ): View {
 
         auth = FirebaseAuth.getInstance()
+        auth.signOut()
 
         if (auth.currentUser != null) {
             moveToOnboardingScreen()
@@ -43,6 +44,7 @@ class UserSignUpFragment : Fragment() {
         viewModel.authState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AuthViewModel.AuthState.Authenticated -> {
+
                     moveToOnboardingScreen()
                 }
 

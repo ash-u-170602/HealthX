@@ -31,6 +31,7 @@
         android:background="@drawable/bottom_nav_bg"
         android:padding="@dimen/_6sdp"
         app:elevation="0dp"
+        android:animateLayoutChanges="true"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_10sdp"
@@ -43,6 +44,7 @@
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
         android:layout_width="@dimen/_45sdp"
         android:layout_height="@dimen/_45sdp"
         android:backgroundTint="@color/theme"

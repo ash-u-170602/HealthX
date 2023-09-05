@@ -7,7 +7,10 @@ import com.example.healthx.models.UserData
 import com.example.healthx.repository.UserRepository
 import com.example.healthx.util.todayDate
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DatabaseViewModel : ViewModel() {
 
@@ -46,7 +49,7 @@ class DatabaseViewModel : ViewModel() {
 
 
     fun updatePedometerDetails(userId: String, newSteps: Int, newCalories: Float, newDistance: Float) =
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.updatePedometerDetails(userId, newSteps, newCalories, newDistance)
         }
 

@@ -17,6 +17,7 @@ import com.example.healthx.R
 import com.example.healthx.auth.AuthViewModel
 import com.example.healthx.databinding.MenuFragmentBinding
 import com.example.healthx.db.DatabaseViewModel
+import com.example.healthx.models.UserData
 import com.example.healthx.ui.activities.OnboardingActivity
 import com.example.healthx.ui.fragments.BaseFragment
 import com.github.mikephil.charting.data.PieData
@@ -36,10 +37,10 @@ class MenuFragment : BaseFragment() {
     private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         database = FirebaseDatabase.getInstance()
+        navigationVisibility(true)
 
     }
 
@@ -137,37 +138,10 @@ class MenuFragment : BaseFragment() {
                         numberOfCurrentSteps.text = userData.steps.toString()
                         calories.text = userData.calories.toInt().toString()
                         numberOfTotalSteps.text = userData.totalSteps.toString()
-
+                        
                     }
 
-                    val list: ArrayList<PieEntry> = ArrayList()
-                    list.add(PieEntry(userData.steps.toFloat()))
-                    list.add(PieEntry((userData.totalSteps - userData.steps).toFloat()))
-
-                    val pieDataSet = PieDataSet(list, "")
-
-                    val customColors = mutableListOf(
-                        ContextCompat.getColor(requireContext(), R.color.themeHeavy),
-                        ContextCompat.getColor(requireContext(), R.color.theme)
-                    )
-
-                    pieDataSet.colors = customColors
-                    pieDataSet.sliceSpace = 1f
-
-                    pieDataSet.valueTextSize = 0f
-
-                    val pieData = PieData(pieDataSet)
-                    binding.pieChart.apply {
-                        data = pieData
-                        description.isEnabled = false
-                        transparentCircleRadius = 0f
-                        isDrawHoleEnabled = false
-                        legend.isEnabled = false
-                        isRotationEnabled = false
-                        setTouchEnabled(false)
-                        animateY(800)
-                        animateX(500)
-                    }
+                    setupPieChart(userData)
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -176,6 +150,37 @@ class MenuFragment : BaseFragment() {
             }
 
 
+        }
+    }
+
+    private fun setupPieChart(userData: UserData) {
+        val list: ArrayList<PieEntry> = ArrayList()
+        list.add(PieEntry(userData.steps.toFloat()))
+        list.add(PieEntry((userData.totalSteps - userData.steps).toFloat()))
+
+        val pieDataSet = PieDataSet(list, "")
+
+        val customColors = mutableListOf(
+            ContextCompat.getColor(requireContext(), R.color.themeHeavy),
+            ContextCompat.getColor(requireContext(), R.color.theme)
+        )
+
+        pieDataSet.colors = customColors
+        pieDataSet.sliceSpace = 1f
+
+        pieDataSet.valueTextSize = 0f
+
+        val pieData = PieData(pieDataSet)
+        binding.pieChart.apply {
+            data = pieData
+            description.isEnabled = false
+            transparentCircleRadius = 0f
+            isDrawHoleEnabled = false
+            legend.isEnabled = false
+            isRotationEnabled = false
+            setTouchEnabled(false)
+            animateY(800)
+            animateX(500)
         }
     }
 
@@ -195,5 +200,14 @@ class MenuFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        navigationVisibility(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navigationVisibility(true)
+    }
 
 }

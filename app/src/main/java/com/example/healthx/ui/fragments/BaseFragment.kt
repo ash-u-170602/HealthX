@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.healthx.R
+import com.example.healthx.ui.activities.MainActivity
+import com.example.healthx.ui.activities.OnboardingActivity
 import java.util.Calendar
 
 open class BaseFragment : Fragment() {
@@ -25,9 +27,8 @@ open class BaseFragment : Fragment() {
 
     fun setGreet(): String {
         val currentTime = Calendar.getInstance().time
-        val hourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
-        val greeting = when (hourOfDay) {
+        val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
             in 4..11 -> "Good Morning"
             in 12..16 -> "Good Afternoon"
             in 17..20 -> "Good Evening"
@@ -37,6 +38,10 @@ open class BaseFragment : Fragment() {
         }
 
         return greeting
+    }
+
+    fun navigationVisibility(isVisible:Boolean){
+        ( activity as OnboardingActivity).navigationVisibility(isVisible)
     }
 
 }
