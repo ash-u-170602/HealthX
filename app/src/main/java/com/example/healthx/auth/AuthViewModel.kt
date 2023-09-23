@@ -84,7 +84,6 @@ class AuthViewModel : ViewModel() {
     }
 
 
-
     sealed class AuthState {
         object Authenticated : AuthState()
         data class GoogleSignIn(val intent: Intent) : AuthState()
